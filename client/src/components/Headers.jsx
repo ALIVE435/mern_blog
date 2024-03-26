@@ -1,11 +1,12 @@
 import { Button, Navbar, NavbarToggle, TextInput } from 'flowbite-react'
 import React from 'react'
-import { Link, useLocation} from 'react-router-dom'
+import { Link, useLocation,useNavigate} from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaMoon } from 'react-icons/fa'
 
 export default function Headers() {
   const path =useLocation().pathname;
+  const navigate = useNavigate();
   return (
     <Navbar className='border-b-2'>
       <Link to='/' className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
@@ -36,10 +37,10 @@ export default function Headers() {
             Sign In
           </Button>
         </Link>
-        <NavbarToggle/>   {/*Adding Hamburger menu for below div */}
       </div>
+      <NavbarToggle/>   {/*Adding Hamburger menu for below div */}
       <Navbar.Collapse>
-        <Navbar.Link active={path==='/'} as='div'>
+        <Navbar.Link active={path==='/'} onClick={()=>navigate('/')} as='div'>
           <Link to='/'>
             Home
           </Link>
