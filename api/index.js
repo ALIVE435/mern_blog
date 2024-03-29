@@ -1,19 +1,16 @@
-const express =require('express');
-const mongoose= require('mongoose');
-const userRoutes=require('./routes/user.route.js');
-const authRoutes=require("./routes/auth.route.js")
+import express from 'express'
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-mongoose.connect('mongodb+srv://ALIVE435:2002@cluster0.tgf93sl.mongodb.net/mern_blog')
-.then((res)=>{
-    console.log("database connected");
-    //console.log(res);
-})
 const app=express();
 const port=3000;
+dotenv.config();
 
-app.use(express.json());
-app.use('/api/user',userRoutes);
-app.use('/api/auth',authRoutes);
+//console.log(process.env.MONGO_url)
+mongoose.connect(process.env.MONGO_url)
+.then(()=>{console.log("mongodb connected")})
+.catch((err)=>{console.log(err)});
+
 
 
 
