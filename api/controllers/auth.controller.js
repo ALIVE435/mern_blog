@@ -1,21 +1,27 @@
-const User= require('../models/user.models.js');
+import User from '../models/user.models.js'
+import bcryptjs from "bcryptjs"
 
 const signup=async (req,res)=>{
     const {username,email,password}=req.body;
     if(!username || !email || !password || username==='' || email==='' || password===''){
         return res.status(400).send("all field are required");
     }
+    const hashedPassword=bcryptjs.hashSync(password,10);
+
     const newUser=new User({
         username,
         email,
-        password,
+        password:hashedPassword
     })
     try{
-        await newUser.save();
+        const result=await newUser.save();
+        console.log(result)
+        res.json("user created")
     }
-    catch{
+    catch(err){
+        console.log(err)
         return res.json({msg:"err occured"})
     }
 }
 
-module.exports=signup;
+export default signup;
