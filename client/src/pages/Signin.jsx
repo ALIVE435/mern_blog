@@ -1,6 +1,6 @@
 export const Signin=()=>{
     return (
-        <div>Signin</div>
+        <div className="min-h-screen  border-8 border-red-600">Signin</div>
     )
 }
 
