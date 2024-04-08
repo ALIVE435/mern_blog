@@ -4,5 +4,5 @@ import signup from "../controllers/auth.controller.js"
 
 const router=express.Router();
 
-export default router.post('/signup',signup);
+export default router.post('/signup',signup); //signup here is a callback function only
 
