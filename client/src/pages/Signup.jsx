@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom"
-import { Label, TextInput, Button, Alert } from "flowbite-react"
+import { Link, useNavigate} from "react-router-dom"
+import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react"
 import { useState } from "react"
 import axios from 'axios'
 
@@ -7,28 +7,31 @@ import axios from 'axios'
 
 export default function Signup() {
   const [formData, setFormData] = useState({});
-  const [errorMessage,setErrorMesssage]=useState(null)
-  const [loading,setLoading]=useState(0)
+  const [errorMessage, setErrorMesssage] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const navigate=useNavigate();
 
-  console.log(loading);
   const eventHandler = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value.trim()}) //copying existing object to another object and changing(or adding extra) existing key value
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() }) //copying existing object to another object and changing(or adding extra) existing key value
   }
+
   const submitData = async (e) => {
-    if(!errorMessage)setErrorMesssage(null)
     e.preventDefault(); //default behaviour on submitting form is reloading the entire page, which is stopped here
-    if(!formData.username || !formData.email || !formData.password){
+    if (!formData.username || !formData.email || !formData.password) {
       setErrorMesssage("Please fill in all fields.")
       return;
     }
     try {
-      const res = await axios.post('/api/auth/signup',JSON.stringify(formData),{
-        headers:{'Content-Type':'application/json'},
+      setErrorMesssage(null)
+      setLoading(true)
+      const res = await axios.post('/api/auth/signup', JSON.stringify(formData), {
+        headers: { 'Content-Type': 'application/json' },
       });
-      window.alert(res.data)
+      setLoading(false)
+      navigate("/signin")
     } catch (error) {
+      setLoading(false)
       return setErrorMesssage(error.response.data.message)
-      console.log(error.statusCode==440);
     }
   }
 
@@ -65,14 +68,23 @@ export default function Signup() {
               <Label value="Create your password"></Label>
               <TextInput type="password" placeholder="8470012256:hp carepack service" id="password" onChange={eventHandler}></TextInput>
             </div>
-            <Button gradientDuoTone="purpleToPink" type="submit">Sign Up</Button>
+            <Button gradientDuoTone="purpleToPink" type="submit" disabled={loading}>
+              {
+                loading?(
+                <>
+                  <Spinner size={'sm'}/>
+                  <span>Signing Up...</span>
+                </>):
+                "Sign Up"
+              }
+            </Button>
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Have an account?</span>
             <Link to='/signin' className="text-blue-500">Sign In</Link>
           </div>
           {
-            errorMessage?<Alert className="mt-5" color="failure">{errorMessage}</Alert>:""
+            errorMessage ? <Alert className="mt-5" color="failure">{errorMessage}</Alert> : ""
           }
         </div>
       </div>
