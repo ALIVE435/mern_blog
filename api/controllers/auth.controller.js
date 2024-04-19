@@ -1,9 +1,10 @@
 import User from '../models/user.models.js'
 import bcryptjs from "bcryptjs"
 import { errorHandler } from '../utils/error.js';
+import jwt from "jsonwebtoken";
 
-const signup=async (req,res,next)=>{
-    console.log(req.body)
+export const signup=async (req,res,next)=>{
+    //console.log(req.body)
     const {username,email,password}=req.body;
     if(!username || !email || !password || username==='' || email==='' || password===''){
         next(errorHandler(400,"all field are required"));
@@ -25,4 +26,23 @@ const signup=async (req,res,next)=>{
     }
 }
 
-export default signup;
+export const signin = async (req,res,next)=>{
+    const {username,password}=req.body;
+    if(!username || !password || username==='' || password===''){
+        return next(errorHandler(400,"All fields are required"));
+    }
+    try{
+        const validateUser =await User.findOne({username});
+        if(!validateUser){
+            return next(errorHandler(404,"User not found"));
+        }
+        const validatePassword=bcryptjs.compareSync(password,validateUser.password);
+        if(!validatePassword) return next(errorHandler(404,'Invalid password'));
+
+        const {password:leftout, ...rest}=validateUser._doc;
+        const token=jwt.sign({id:validateUser._id},process.env.JWT_SECRET,); //here we could put expiration time of session as well, since it is left unfilled, session will expires after closing the window
+        res.status(200).cookie('access_token',token,{httpOnly:true}).json(rest);
+    }catch(err){
+
+    }
+}
