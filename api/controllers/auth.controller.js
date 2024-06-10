@@ -40,7 +40,7 @@ export const signin = async (req,res,next)=>{
         if(!validatePassword) return next(errorHandler(404,'Invalid password'));
 
         const {password:leftout, ...rest}=validateUser._doc;
-        const token=jwt.sign({id:validateUser._id},process.env.JWT_SECRET,); //here we could put expiration time of session as well, since it is left unfilled, session will expires after closing the window
+        const token=jwt.sign({id:validateUser._id},process.env.JWT_SECRET,);
         res.status(200).cookie('access_token',token,{httpOnly:true}).json(rest);
     }catch(err){
 

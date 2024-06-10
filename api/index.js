@@ -14,10 +14,10 @@ mongoose.connect(process.env.MONGO_url)
 .then(()=>{console.log("mongodb connected")})
 .catch((err)=>{console.log(err)});
 
-app.use('/api/user',userRoute);
+app.use('/api/user',userRoute); //middleware with custom route, runs only for request starting with /api/user
 app.use('/api/auth',authRoute);
 
-app.use((err,req,res,next)=>{
+app.use((err,req,res,next)=>{     //error handling middleware
     const statusCode=err.statusCode || 500;
     const message=err.message || "Internal Server Error";
     res.status(statusCode).json({

@@ -37,10 +37,10 @@ export default function Signup() {
 
 
   return (
-    <div className="min-h-screen mt-20 border-8 border-red-600">
-      <div className="p-3 max-w-3xl border-4 border-green-600 mx-auto flex flex-col md:flex-row  md:items-center gap-4">
+    <div className="min-h-screen mt-20">
+      <div className="p-3 max-w-3xl mx-auto flex flex-col md:flex-row  md:items-center gap-4">
         {/* left */}
-        <div className="border-4 border-orange-400 p-3 flex-1">
+        <div className=" p-3 flex-1">
           <Link to='/' className='text-4xl font-bold dark:text-white'>
             <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>
               Aniket's
@@ -49,12 +49,12 @@ export default function Signup() {
               Blog
             </span>
           </Link>
-          <p className="my-3 text-sm">
+          <p className="my-3 text-xl font-semibold">
             Enter Your Details.
           </p>
         </div>
         {/* right */}
-        <div className="border-4 border-orange-400 p-3 flex-1">
+        <div className=" p-3 flex-1">
           <form className="flex flex-col gap-3" onSubmit={submitData}>
             <div className="">
               <Label value="Create your username"></Label>
