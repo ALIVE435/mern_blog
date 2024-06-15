@@ -10,6 +10,7 @@ export default function Signup() {
   const [errorMessage, setErrorMesssage] = useState(null)
   const [loading, setLoading] = useState(false)
   const navigate=useNavigate();
+  
 
   const eventHandler = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() }) //copying existing object to another object and changing(or adding extra) existing key value

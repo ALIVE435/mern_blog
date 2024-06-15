@@ -1,15 +1,15 @@
-import { Link, useNavigate} from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react"
 import { useState } from "react"
 import axios from 'axios'
-
-
+import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function Signin() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMesssage] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const navigate=useNavigate();
+  const { loading, error: errorMessage } = useSelector(state => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const eventHandler = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() }) //copying existing object to another object and changing(or adding extra) existing key value
@@ -18,20 +18,20 @@ export default function Signin() {
   const submitData = async (e) => {
     e.preventDefault(); //default behaviour on submitting form is reloading the entire page, which is stopped here
     if (!formData.email || !formData.password) {
-      setErrorMesssage("Please fill in all fields.")
+      dispatch(signInFailure("Please fill out all fields"))
       return;
     }
+
     try {
-      setErrorMesssage(null)
-      setLoading(true)
-      const res = await axios.post('/api/auth/signup', JSON.stringify(formData), {
+      dispatch(signInStart());
+      const res = await axios.post('/api/auth/signin', JSON.stringify(formData), {
         headers: { 'Content-Type': 'application/json' },
-      }); //explicitly setting the content type and json conversion, that axios handles bydefault
-      setLoading(false)
-      if(res.ok)navigate("/")
+      }); //explicitly setting the content type and json conversion, though axios handles it bydefault
+      
+      dispatch(signInSuccess(res.data))
+      navigate("/")
     } catch (error) {
-      setLoading(false)
-      return setErrorMesssage(error.response.data.message)
+      dispatch(signInFailure(error.response.data.message))
     }
   }
 
@@ -66,12 +66,12 @@ export default function Signin() {
             </div>
             <Button gradientDuoTone="purpleToPink" type="submit" disabled={loading}>
               {
-                loading?(
-                <>
-                  <Spinner size={'sm'}/>
-                  <span>Signing In...</span>
-                </>):
-                "Sign In"
+                loading ? (
+                  <>
+                    <Spinner size={'sm'} />
+                    <span>Signing In...</span>
+                  </>) :
+                  "Sign In"
               }
             </Button>
           </form>

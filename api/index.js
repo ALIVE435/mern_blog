@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGO_url)
 app.use('/api/user',userRoute); //middleware with custom route, runs only for request starting with /api/user
 app.use('/api/auth',authRoute);
 
-app.use((err,req,res,next)=>{     //error handling middleware
+app.use((err,req,res,next)=>{     //error handling middleware: if any of the req handler throws error, the control reaches here
     const statusCode=err.statusCode || 500;
     const message=err.message || "Internal Server Error";
     res.status(statusCode).json({
