@@ -4,6 +4,7 @@ import { useState } from "react"
 import axios from 'axios'
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice"
 import { useDispatch, useSelector } from "react-redux"
+import OAuth from "../components/OAuth"
 
 export default function Signin() {
   const [formData, setFormData] = useState({});
@@ -27,11 +28,9 @@ export default function Signin() {
       const res = await axios.post('/api/auth/signin', JSON.stringify(formData), {
         headers: { 'Content-Type': 'application/json' },
       }); //explicitly setting the content type and json conversion, though axios handles it bydefault
-      console.log("hi")
       dispatch(signInSuccess(res.data))
       navigate("/")
     } catch (error) {
-      console.log("hello")
       dispatch(signInFailure(error.response.data.message))
     }
   }
@@ -75,6 +74,7 @@ export default function Signin() {
                   "Sign In"
               }
             </Button>
+            <OAuth/>
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't have an account?</span>
