@@ -9,7 +9,7 @@ export default function FooterComponent() {
         <Footer container className='border border-t-8 mt-2 border-teal-800'>
             <div className='w-full mx-auto'>
                 <div className='grid w-full justify-between sm:flex md:grid-cols-1'>
-                    <div className='p-2 border-2 border-yellow-400'>
+                    <div className='p-2 '>
                         <Link to='/' className='text-lg sm:text-xl font-bold dark:text-white'>
                             <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>
                                 Aniket's
@@ -19,7 +19,7 @@ export default function FooterComponent() {
                             </span>
                         </Link>
                     </div>
-                    <div className='p-2 grid grid-col-1 gap-3  sm:grid-cols-3 sm:gap-6 border-2 border-slate-800'>
+                    <div className='p-2 grid grid-col-1 gap-3  sm:grid-cols-3 sm:gap-6 '>
                         <div>
                             <Footer.Title title='ABOUT' />
                             <Footer.LinkGroup col>
@@ -54,7 +54,7 @@ export default function FooterComponent() {
                             </Footer.LinkGroup>
                         </div>
                     </div>
-                    <div className='grid grid-cols-3  p-2 border-2 border-yellow-400'>
+                    <div className='grid grid-cols-3  p-2 '>
                         <div className='col-span-3'>&#169; {date.getFullYear()} All rights reserved.</div>
                         <Footer.Icon href="https://twitter.com/aniketsingh435" icon={BsTwitterX} />
                         <Footer.Icon href="#" icon={BsFacebook} />

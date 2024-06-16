@@ -27,10 +27,11 @@ export default function Signin() {
       const res = await axios.post('/api/auth/signin', JSON.stringify(formData), {
         headers: { 'Content-Type': 'application/json' },
       }); //explicitly setting the content type and json conversion, though axios handles it bydefault
-      
+      console.log("hi")
       dispatch(signInSuccess(res.data))
       navigate("/")
     } catch (error) {
+      console.log("hello")
       dispatch(signInFailure(error.response.data.message))
     }
   }
