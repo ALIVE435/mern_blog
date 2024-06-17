@@ -18,7 +18,7 @@ export default function OAuth() {
         provider.setCustomParameters({ prompt: 'select_account' })
         try {
             const resultsFromGoogle = await signInWithPopup(auth, provider)
-            console.log(resultsFromGoogle)
+            //console.log(resultsFromGoogle)
             dispatch(signInStart())
             const res = await axios.post('/api/auth/google', JSON.stringify({
                 name:resultsFromGoogle.user.displayName,

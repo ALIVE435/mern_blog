@@ -1,12 +1,15 @@
-import { Button, Navbar, NavbarToggle, TextInput } from 'flowbite-react'
+import { Button, Dropdown, Navbar, NavbarToggle, TextInput, Avatar } from 'flowbite-react'
 import React from 'react'
-import { Link, useLocation,useNavigate} from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaMoon } from 'react-icons/fa'
+import { useSelector } from "react-redux"
+
 
 export default function Headers() {
-  const path =useLocation().pathname;
+  const path = useLocation().pathname;
   const navigate = useNavigate();
+  const { currentUser } = useSelector(state => state.user)
   return (
     <Navbar className='border-b-2 bg-slate-600'>
       <Link to='/' className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
@@ -32,25 +35,47 @@ export default function Headers() {
         <Button className='w-12 h-10 hidden sm:inline' color='gray' pill>
           <FaMoon />
         </Button>
-        <Link to='/signin'>
-          <Button gradientDuoTone='purpleToBlue' outline>
-            Sign In
-          </Button>
-        </Link>
+        {currentUser ? (
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={<Avatar
+              alt='user'
+              img={currentUser.photoUrl}
+              rounded
+            />}
+          >
+            <Dropdown.Header>
+              <span className='block text-sm'>{currentUser.username}</span>
+              <span className='block text-sm font-medium truncate'>{currentUser.email}</span>
+            </Dropdown.Header>
+
+            <Dropdown.Item>
+              <Link to="/dashboard?tab=profile">Profile</Link>
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item>Sign Out</Dropdown.Item>
+          </Dropdown>
+        ) :
+          <Link to='/signin'>
+            <Button gradientDuoTone='purpleToBlue' outline>
+              Sign In
+            </Button>
+          </Link>}
       </div>
-      <NavbarToggle/>   {/*Adding Hamburger menu for below div */}
+      <NavbarToggle />   {/*Adding Hamburger menu for below div */}
       <Navbar.Collapse>
-        <Navbar.Link active={path==='/'} onClick={()=>navigate('/')} as='div'>
+        <Navbar.Link active={path === '/'} onClick={() => navigate('/')} as='div'>
           <Link to='/'>
             Home
           </Link>
         </Navbar.Link>
-        <Navbar.Link active={path==='/about'} as='div'>
+        <Navbar.Link active={path === '/about'} as='div'>
           <Link to='/about'>
             About
           </Link>
         </Navbar.Link>
-        <Navbar.Link active={path==='/projects'} as='div'>
+        <Navbar.Link active={path === '/projects'} as='div'>
           <Link to='/projects'>
             Projects
           </Link>
