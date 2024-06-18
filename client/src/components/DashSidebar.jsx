@@ -18,8 +18,8 @@ export const DashSidebar = () => {
         <Sidebar className="w-full md:w-56">
             <Sidebar.Items>
                 <Sidebar.ItemGroup>
-                    <Link to="/dashboard?tab=profile">
-                        <Sidebar.Item active={tab == 'profile'} icon={HiUser} label={"User"} labelColor='dark'>
+                    <Link to="/dashboard?tab=profile" >
+                        <Sidebar.Item as={"div"} active={tab == 'profile'} icon={HiUser} label={"User"} labelColor='dark'>
                             Profile
                         </Sidebar.Item>
                     </Link>

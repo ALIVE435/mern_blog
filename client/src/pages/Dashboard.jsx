@@ -20,7 +20,7 @@ export default function Dashboard() {
       <div className="md:w-56">
         <DashSidebar/>
       </div>
-      <div>
+      <div className="w-full">
         <DashProfile/>
       </div>
     </div>
