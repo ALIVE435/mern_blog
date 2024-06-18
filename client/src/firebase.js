@@ -5,7 +5,7 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,   //not env.VITE_FIREBASE_API_KEY bcz react is initialised with vite
   authDomain: "mern-blog-a4570.firebaseapp.com",
   projectId: "mern-blog-a4570",
   storageBucket: "mern-blog-a4570.appspot.com",
