@@ -2,6 +2,7 @@ import User from '../models/user.models.js'
 import bcryptjs from "bcryptjs"
 import { errorHandler } from '../utils/error.js';
 import jwt from "jsonwebtoken";
+import { passwordSchema } from '../models/user.models.js';
 
 export const signup = async (req, res, next) => {
     //console.log(req.body)
@@ -10,6 +11,8 @@ export const signup = async (req, res, next) => {
         next(errorHandler(400, "all fields are required"));
         return;
     }
+    const validatePassword = passwordSchema.safeParse(password);console.log(validatePassword.error.issues[0].message)
+    if(!validatePassword.success) return next(errorHandler(411,validatePassword.error.issues[0].message));
     const hashedPassword = bcryptjs.hashSync(password, 10);
     const newUser = new User({
         username,

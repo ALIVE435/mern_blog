@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/about" element={<About />}></Route>
-        <Route element={<PrivateRoute />}>
+        <Route element={<PrivateRoute />}>   {/*protecting dashboard route */}
           <Route path="/dashboard" element={<Dashboard />}></Route>
         </Route>
         <Route path="/signin" element={<Signin></Signin>}></Route>

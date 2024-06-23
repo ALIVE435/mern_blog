@@ -21,7 +21,8 @@ export const DashProfile = () => {
             setImageFileUrl(URL.createObjectURL(image))
         }
     }
-    const uploadImage = async () => {
+    const uploadImage = async () => {       //https://firebase.google.com/docs/storage/web/upload-files   
+        setImageFileUploadError(null);
         const imageStorage = getStorage(app);
         const fileName = new Date().getTime() + imageFile.name;
         // console.log(fileName)
@@ -35,12 +36,16 @@ export const DashProfile = () => {
             setImageFileUploadProgress(progress.toFixed(0));
         },
         (error) => {
-            setImageFileUploadError("couldn't upload file (file must be less than 2mb)")
+            setImageFileUploadError("couldn't upload file (file must be less than 2mb)");
+            setImageFile(null);
+            setImageFileUrl(null)
+            setImageFileUploadProgress(null)
         },
         () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    console.log(downloadURL)
+                    //console.log(downloadURL)
                     setImageFileUrl(downloadURL);
+                    setImageFileUploadProgress(null);
                 })
             }
         )

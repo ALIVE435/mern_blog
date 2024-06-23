@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import {z} from "zod";
 
 const userSchema=new mongoose.Schema({
     username:{
@@ -22,5 +23,12 @@ const userSchema=new mongoose.Schema({
     }
 },{timestamps:true});
 const User=mongoose.model('users',userSchema);
+
+export const passwordSchema = z.string()
+  .min(8,{message:"password must contain atleast 8 character"})
+  .regex(new RegExp(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]/), {
+    message: 'Password must be at least 8 characters long and contain at least one special symbol and one alphanumeric character.'
+});
+
 
 export default User;
