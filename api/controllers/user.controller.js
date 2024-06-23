@@ -19,14 +19,16 @@ const updateUser =  async(req,res,next)=>{
         const updatedUser = await User.findByIdAndUpdate(req.params.userId,{
             $set:{                                  //only update this mentioned data if required
                 username:req.body.username,
-                photoUrl:req.body.profilePicture,
+                photoUrl:req.body.photoUrl,
                 password:req.body.password,
             }
         },{new:true});
         const {password,...rest} = updatedUser._doc;
-        res.status(200).json(rest);
+        return res.status(200).json(rest);
     }catch(err){
-        next(err);
+        console.log(err)
+        next(errorHandler(440, err.message));
+        //next({err.statusCode:500,});
     }
 };
 

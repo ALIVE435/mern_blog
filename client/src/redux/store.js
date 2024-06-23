@@ -4,7 +4,7 @@ import {persistReducer,persistStore} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import themeReducer from "./theme/themeSlice"
 
-const rootReducer= combineReducers({     //this combines all reducers to a single bundle
+const rootReducer= combineReducers({     //this combines all reducers(methods that change states) to a single bundle
   user:userReducer,
   theme:themeReducer,
 });

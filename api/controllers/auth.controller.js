@@ -11,7 +11,7 @@ export const signup = async (req, res, next) => {
         next(errorHandler(400, "all fields are required"));
         return;
     }
-    const validatePassword = passwordSchema.safeParse(password);console.log(validatePassword.error.issues[0].message)
+    const validatePassword = passwordSchema.safeParse(password);
     if(!validatePassword.success) return next(errorHandler(411,validatePassword.error.issues[0].message));
     const hashedPassword = bcryptjs.hashSync(password, 10);
     const newUser = new User({
@@ -21,10 +21,10 @@ export const signup = async (req, res, next) => {
     })
     try {
         const result = await newUser.save();
-        res.status(200).json("user created")
+        return res.status(200).json("user created")
     }
     catch (err) {
-        next(errorHandler(440, err.message));
+        return next(errorHandler(440, err.message));
         //return res.status(400).json({msg:"err occured"})
     }
 }
@@ -44,7 +44,7 @@ export const signin = async (req, res, next) => {
 
         const { password: leftout, ...rest } = validateUser._doc;
         const token = jwt.sign({ id: validateUser._id }, process.env.JWT_SECRET,);
-        res.status(200).cookie('access_token', token, { httpOnly: true }).json(rest);
+        return res.status(200).cookie('access_token', token, { httpOnly: true }).json(rest);
     } catch (err) {
         return next(errorHandler(500, "Internal Server Error"))
     }

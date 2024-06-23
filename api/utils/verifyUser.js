@@ -3,7 +3,6 @@ import { errorHandler } from "./error.js";
 
 export const verifyUser = (req, res, next)=>{
     const token = req.cookies.access_token;
-    console.log(token)
     if(!token) return next(errorHandler(401, "Unauthorised"));
 
     jwt.verify(token, process.env.JWT_SECRET, (err,user)=>{
