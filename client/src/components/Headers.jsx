@@ -2,7 +2,7 @@ import { Button, Dropdown, Navbar, NavbarToggle, TextInput, Avatar } from 'flowb
 import React from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
-import { FaMoon } from 'react-icons/fa'
+import {  FaMoon, FaSun } from 'react-icons/fa'
 import { useDispatch, useSelector } from "react-redux"
 import { toggletheme } from '../redux/theme/themeSlice'
 
@@ -12,6 +12,7 @@ export default function Headers() {
   const navigate = useNavigate();
   const { currentUser } = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.theme);
 
   return (
     <Navbar className='border-b-2 bg-slate-600'>
@@ -35,8 +36,8 @@ export default function Headers() {
         <AiOutlineSearch />
       </Button>
       <div className='flex gap-2 md:order-2'>
-        <Button className='w-12 h-10 hidden sm:inline' color='gray' pill onClick={()=>dispatch(toggletheme())}>
-          <FaMoon />
+        <Button className='w-12 h-10 hidden sm:inline' color='gray' pill onClick={() => dispatch(toggletheme())}>
+          {!theme ? <FaSun /> : <FaMoon />}
         </Button>
         {currentUser ? (
           <Dropdown
