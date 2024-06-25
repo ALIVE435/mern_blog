@@ -5,7 +5,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable, } from 'firebase
 import { app } from "../firebase";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateStart, updateEnd, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure } from "../redux/user/userSlice";
+import { updateStart, updateEnd, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess} from "../redux/user/userSlice";
 import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
@@ -73,7 +73,7 @@ export const DashProfile = () => {
     }
     const submitChange = async (e) => {
         e.preventDefault();
-        console.log(updateData)
+        //console.log(updateData)
         if (Object.keys(updateData).length == 0) return setErrorMessage("No changes made")
         if (imageUploading) {
             return setErrorMessage("Please wait while image being uploaded")
@@ -82,7 +82,7 @@ export const DashProfile = () => {
             setErrorMessage(null);
             dispatch(updateStart());
             const updateResult = await axios.put(`/api/user/update/${currentUser._id}`, updateData);
-            console.log(updateResult)
+            //console.log(updateResult)
             dispatch(updateEnd(updateResult.data));
         } catch (err) {
             setErrorMessage(err.response.data.message);
@@ -101,6 +101,20 @@ export const DashProfile = () => {
             dispatch(deleteUserFailure());
         }
     };
+    const handleSignOut = async ()=>{
+        setErrorMessage(null)
+        try{
+            const res = await axios.post("/api/user/signout");
+            //console.log(res.data)
+            dispatch(signoutSuccess())
+        }
+        catch(err){
+            console.log(err.response.data)
+            setErrorMessage("some error occured, try again")
+        }
+    };
+
+
     return (
         <div className="max-w-lg mx-auto w-full">
             <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -130,7 +144,7 @@ export const DashProfile = () => {
                     <div className="cursor-pointer" disabled={loading || imageUploading} onClick={() => {setShowModal(true)
                         setErrorMessage(null);
                     }}>Delete Account</div>
-                    <div className="cursor-pointer">Sign Out</div>
+                    <div className="cursor-pointer" onClick={handleSignOut}>Sign Out</div>
                 </div>
                 <div>
                     {

@@ -2,10 +2,11 @@ import { Button, Dropdown, Navbar, NavbarToggle, TextInput, Avatar } from 'flowb
 import React from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
-import {  FaMoon, FaSun } from 'react-icons/fa'
+import { FaMoon, FaSun } from 'react-icons/fa'
 import { useDispatch, useSelector } from "react-redux"
 import { toggletheme } from '../redux/theme/themeSlice'
-
+import { signoutSuccess } from '../redux/user/userSlice'
+import axios from 'axios'
 
 export default function Headers() {
   const path = useLocation().pathname;
@@ -13,6 +14,17 @@ export default function Headers() {
   const { currentUser } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.theme);
+
+
+  const handleSignOut = async () => {
+    try {
+      const res = await axios.post("/api/user/signout");
+      dispatch(signoutSuccess())
+    }
+    catch (err) {
+      console.log(err.response)
+    }
+  }
 
   return (
     <Navbar className='border-b-2 bg-slate-600'>
@@ -58,7 +70,7 @@ export default function Headers() {
               <Link to="/dashboard?tab=profile">Profile</Link>
             </Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item>Sign Out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
           </Dropdown>
         ) :
           <Link to='/signin'>
