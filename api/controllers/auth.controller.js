@@ -43,7 +43,7 @@ export const signin = async (req, res, next) => {
         if (!validatePassword) return next(errorHandler(404, 'Invalid password'));
 
         const { password: leftout, ...rest } = validateUser._doc;
-        const token = jwt.sign({ id: validateUser._id }, process.env.JWT_SECRET,);
+        const token = jwt.sign({ id: validateUser._id,isAdmin:validateUser.isAdmin}, process.env.JWT_SECRET,);
         return res.status(200).cookie('access_token', token, { httpOnly: true }).json(rest);
     } catch (err) {
         return next(errorHandler(500, "Internal Server Error"))
@@ -66,7 +66,7 @@ export const googleAuth = async (req, res, next) => {
             try {
                 const result = await newUser.save();
                 const { password, ...rest } = result._doc;
-                const token = jwt.sign({ id: result._id }, process.env.JWT_SECRET,);
+                const token = jwt.sign({ id: result._id, isAdmin:result.isAdmin }, process.env.JWT_SECRET,);
                 res.status(200).cookie('access_token', token, { httpOnly: true }).json(rest);
             }
             catch (err) {

@@ -5,10 +5,11 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable, } from 'firebase
 import { app } from "../firebase";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateStart, updateEnd, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess} from "../redux/user/userSlice";
+import { updateStart, updateEnd, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } from "../redux/user/userSlice";
 import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import {Link, useNavigate} from "react-router-dom"
 
 export const DashProfile = () => {
     const { currentUser, loading } = useSelector(state => state.user);
@@ -22,6 +23,7 @@ export const DashProfile = () => {
     const dispatch = useDispatch();
     const [errorMessage, setErrorMessage] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
 
     const handleFileChange = (e) => {
         const image = e.target.files[0];
@@ -73,13 +75,13 @@ export const DashProfile = () => {
     }
     const submitChange = async (e) => {
         e.preventDefault();
+        setErrorMessage(null);
         //console.log(updateData)
         if (Object.keys(updateData).length == 0) return setErrorMessage("No changes made")
         if (imageUploading) {
             return setErrorMessage("Please wait while image being uploaded")
         }
         try {
-            setErrorMessage(null);
             dispatch(updateStart());
             const updateResult = await axios.put(`/api/user/update/${currentUser._id}`, updateData);
             //console.log(updateResult)
@@ -101,14 +103,14 @@ export const DashProfile = () => {
             dispatch(deleteUserFailure());
         }
     };
-    const handleSignOut = async ()=>{
+    const handleSignOut = async () => {
         setErrorMessage(null)
-        try{
+        try {
             const res = await axios.post("/api/user/signout");
             //console.log(res.data)
             dispatch(signoutSuccess())
         }
-        catch(err){
+        catch (err) {
             console.log(err.response.data)
             setErrorMessage("some error occured, try again")
         }
@@ -116,7 +118,7 @@ export const DashProfile = () => {
 
 
     return (
-        <div className="max-w-lg mx-auto w-full">
+        <div className="max-w-lg mx-auto w-full px-3">
             <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
             <form className="flex flex-col gap-4">
                 <input type="file" accept="image/*" onChange={handleFileChange} ref={fileRef} hidden />
@@ -138,10 +140,16 @@ export const DashProfile = () => {
                 <TextInput type="email" id='email' disabled placeholder={"email"} onChange={handleDataChange} defaultValue={currentUser.email} />
                 <TextInput type="password" placeholder="password" onChange={handleDataChange} id="password" />
                 <Button type="submit" gradientDuoTone={"purpleToBlue"} disabled={loading || imageUploading} onClick={submitChange} outline>
-                    Update
+                    {(loading || imageUploading)?"Loading":"Update"}
                 </Button>
+                {currentUser.isAdmin && 
+                <Link to="/create-post">
+                    <Button type="button" gradientDuoTone={'purpleToPink'} className="w-full">Create a Post</Button>
+                </Link>
+                }
                 <div className="text-red-500 flex justify-between">
-                    <div className="cursor-pointer" disabled={loading || imageUploading} onClick={() => {setShowModal(true)
+                    <div className="cursor-pointer" disabled={loading || imageUploading} onClick={() => {
+                        setShowModal(true)
                         setErrorMessage(null);
                     }}>Delete Account</div>
                     <div className="cursor-pointer" onClick={handleSignOut}>Sign Out</div>
