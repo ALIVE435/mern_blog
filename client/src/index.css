@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+    min-height: 100vh; 
+}
+
+.ql-editor{      /* custom css to the text-editor from react-quill that has .ql-editor as class*/
+    font-size: 1.05rem;
+}
