@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoute from "./routes/user.route.js"
 import authRoute from './routes/auth.route.js'
+import postRoute from './routes/post.route.js'
 import cookieParser from "cookie-parser"
 
 const app=express();
@@ -19,6 +20,8 @@ mongoose.connect(process.env.MONGO_url)
 
 app.use('/api/user',userRoute); //middleware with custom route, runs only for request starting with /api/user
 app.use('/api/auth',authRoute);
+app.use('/api/post',postRoute)
+
 
 app.use((err,req,res,next)=>{     //error handling middleware: if any of the req handler throws error, the control reaches here
     const statusCode=err.statusCode || 500;
