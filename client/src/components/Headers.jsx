@@ -67,7 +67,7 @@ export default function Headers() {
             </Dropdown.Header>
 
             <Dropdown.Item>
-              <Link to="/dashboard?tab=profile">Profile</Link>
+              <Link to="/dashboard?tab=profile" className='w-full text-start'>Profile</Link>
             </Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>

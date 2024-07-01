@@ -1,5 +1,5 @@
-import { errorHandler } from "../utils/error"
-import Post from "../models/post.models";
+import { errorHandler } from "../utils/error.js"
+import Post from "../models/post.models.js";
 
 export const create = async (req,res,next) => {
     if(!req.user.isAdmin){
@@ -10,7 +10,7 @@ export const create = async (req,res,next) => {
     }
     const slug = req.body.title.split(' ').join('-').toLowerCase().replace(/[^a-zA-A0-9-]/g,'');
     const newPost = new Post({
-        ...req.body, slug, userId: req.body.id,
+        ...req.body, slug, userId: req.user.id,
     });
     try{
         const savedPost = await newPost.save();
