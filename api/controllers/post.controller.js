@@ -22,6 +22,7 @@ export const create = async (req, res, next) => {
 }
 
 export const getposts = async (req, res, next) => {
+    
     try {
         const startIndex = parseInt(req.query.startIndex) || 0;
         const limit = parseInt(req.query.limit) || 9;
@@ -53,9 +54,9 @@ export const getposts = async (req, res, next) => {
         );
 
         const lastMonthPosts = await Post.countDocuments({
-            createdAt: { $gte: oneMonthAgo },
+            createdAt: { $gte: oneMonthAgo }, //query for createdAt >= oneMonthAgo (time comparison)
         });
-
+        //posts will be an array of objects(combines post documents which is an object)
         res.status(200).json({
             posts,
             totalPosts,
