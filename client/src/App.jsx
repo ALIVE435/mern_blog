@@ -12,6 +12,7 @@ import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute"
 import CreatePost from "./pages/CreatePost"
 import PostPage  from "./pages/PostPage"
 import ScrollToTop from "./components/ScrollToTop"
+import Search from "./pages/SearchPage"
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/signin" element={<Signin></Signin>}></Route>
         <Route path="/signup" element={<Signup></Signup>}></Route>
         <Route path="/projects" element={<Projects></Projects>}></Route>
+        <Route path="/search" element={<Search></Search>}></Route>
         <Route path="/post/:postSlug" element={<PostPage></PostPage>}></Route>
       </Routes>
       <FooterComponent />
