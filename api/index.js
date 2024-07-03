@@ -5,6 +5,9 @@ import userRoute from "./routes/user.route.js"
 import authRoute from './routes/auth.route.js'
 import postRoute from './routes/post.route.js'
 import cookieParser from "cookie-parser"
+import path from 'path'
+
+const __dirname = path.resolve();
 
 const app=express();
 const port=3300;
@@ -22,6 +25,10 @@ app.use('/api/user',userRoute); //middleware with custom route, runs only for re
 app.use('/api/auth',authRoute);
 app.use('/api/post',postRoute)
 
+app.use(express.static(path.join(__dirname,'/client/dist')));
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'client','dist','index.html'));
+});
 
 app.use((err,req,res,next)=>{     //error handling middleware: if any of the req handler throws error, the control reaches here
     const statusCode=err.statusCode || 500;

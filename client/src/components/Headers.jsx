@@ -16,7 +16,7 @@ export default function Headers() {
   const { theme } = useSelector((state) => state.theme);
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation()
-  // console.log(location)
+  //console.log(location)
   useEffect(()=>{
     //console.log(searchTerm)
     const urlParams = new URLSearchParams(location.search);
