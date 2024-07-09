@@ -8,7 +8,8 @@ import OAuth from "../components/OAuth"
 
 export default function Signin() {
   const [formData, setFormData] = useState({});
-  const { loading, error: errorMessage } = useSelector(state => state.user);
+  const {error: errorMessage } = useSelector(state => state.user);
+  const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -25,12 +26,15 @@ export default function Signin() {
 
     try {
       dispatch(signInStart());
+      setLoading(true)
       const res = await axios.post('/api/auth/signin', JSON.stringify(formData), {
         headers: { 'Content-Type': 'application/json' },
       }); //explicitly setting the content type and json conversion, though axios handles it bydefault
       dispatch(signInSuccess(res.data))
+      //setLoading(false)
       navigate("/")
     } catch (error) {
+      setLoading(false)
       dispatch(signInFailure(error.response.data.message))
     }
   }
