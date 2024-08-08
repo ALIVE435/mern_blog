@@ -8,6 +8,6 @@ const router = express.Router();
 router.get('/test',test)
 router.put("/update/:userId",verifyUser,updateUser); //verifyUser is a middleware before request handler,updateUser
 router.delete("/delete/:userId",verifyUser,deleteUser);
-router.post("/signout",verifyUser,signout);
+router.post("/signout",signout);
 
 export default router;
